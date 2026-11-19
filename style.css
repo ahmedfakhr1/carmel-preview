@@ -23,6 +23,13 @@ button,input,select,textarea{font:inherit;color:inherit}
 .skip{position:absolute;left:12px;top:-60px;background:var(--ink-d);color:var(--paper);padding:10px 16px;z-index:100;border-radius:8px}
 .skip:focus{top:8px}
 
+/* cover: holds the page in the hero panel colour until the first screen is ready */
+#cover{display:none}
+html.hold #cover{display:grid;place-items:center;position:fixed;inset:0;z-index:300;background:var(--peri);opacity:1;transition:opacity .4s ease}
+html.hold #cover img{width:min(240px,60vw);height:auto}
+html.hold.ready #cover{opacity:0;pointer-events:none}
+html.hold:not(.ready) body{overflow:hidden}
+
 /* buttons */
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:48px;padding:0 30px;border-radius:999px;border:1.5px solid var(--peri-d);background:var(--peri-d);color:var(--paper);font:500 1rem/1 var(--body);letter-spacing:.04em;text-decoration:none;cursor:pointer;white-space:nowrap;transition:transform .15s cubic-bezier(.23,1,.32,1),background-color .2s,color .2s}
 .btn:active{transform:scale(.97)}
@@ -81,32 +88,32 @@ button,input,select,textarea{font:inherit;color:inherit}
 
 /* the doorway: painted border with the arch-topped menu-cover panel */
 .doorway{background:var(--cream) url(img/border-tile.webp) center top/1000px auto;padding:clamp(24px,3.6vw,44px) var(--gut)}
-.door{margin-inline:auto;width:min(460px,100%);border:2px solid var(--gold);background:var(--peri);color:var(--cream);border-radius:999px 999px 0 0;display:flex;flex-direction:column;align-items:center;text-align:center;padding:clamp(86px,15vw,128px) 24px clamp(32px,5vw,48px);animation:doorIn .9s cubic-bezier(.23,1,.32,1) both}
+.door{margin-inline:auto;width:min(460px,100%);border:2px solid var(--gold);background:var(--peri);color:var(--cream);border-radius:999px 999px 0 0;display:flex;flex-direction:column;align-items:center;text-align:center;padding:clamp(86px,15vw,128px) 24px clamp(32px,5vw,48px)}
 .door-mark img{width:min(300px,76%);margin-inline:auto}
 .door-title{font-size:clamp(2.5rem,6vw,3.5rem);line-height:1.05;margin-top:20px;color:var(--paper)}
 .door-line{font:400 clamp(1.5rem,2.4vw,1.875rem)/1.22 var(--display);color:var(--paper);margin-top:26px;max-width:15em;text-wrap:balance}
 .door .btn{margin-top:30px}
-@keyframes doorIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
 .note{text-align:center;padding:18px var(--gut) 0;font-size:1rem;color:var(--muted)}
 
-/* hero */
-.hero{display:flex;flex-direction:column}
-.hero-photo{order:-1;height:clamp(300px,42svh,520px);overflow:hidden;background:var(--cream)}
-.hero-photo img{width:100%;height:100%;object-fit:cover;object-position:60% 55%}
-.hero .doorway{padding:22px 22px 30px}
-.hero .door{width:100%;max-width:420px;padding:80px 20px 32px}
-.hero .door-mark img{width:min(232px,70%)}
-.hero .door-line{margin-top:18px}
-.hero .door .btn{margin-top:22px}
+/* hero: always whole inside the first screen */
+.hero{display:flex;flex-direction:column;height:calc(100vh - var(--hh));height:calc(100svh - var(--hh));min-height:0;overflow:hidden}
+.hero-photo{order:-1;flex:1 1 0;min-height:120px;overflow:hidden;background:var(--cream);position:relative}
+.hero-photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:62% 44%}
+.hero .doorway{flex:none;padding:clamp(12px,2.6svh,22px) 22px clamp(14px,3.4svh,30px)}
+.hero .door{width:100%;max-width:420px;padding:clamp(52px,9.5svh,80px) 20px clamp(18px,3.6svh,32px)}
+.hero .door-mark img{width:min(232px,70%,calc(30svh*2.8))}
+.hero .door-line{margin-top:clamp(10px,2.2svh,18px);font-size:clamp(1.25rem,3.6svh,1.5rem)}
+.hero .door .btn{margin-top:clamp(12px,2.6svh,22px);min-height:clamp(44px,6.4svh,48px)}
+@media (max-width:759px){.hero{height:calc(100vh - var(--hh) - 56px - env(safe-area-inset-bottom,0px));height:calc(100svh - var(--hh) - 56px - env(safe-area-inset-bottom,0px))}}
 @media (min-width:900px){
-  .hero{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);height:min(calc(100svh - var(--hh)),880px);min-height:620px}
-  .hero-photo{order:0;height:auto}
+  .hero{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);height:calc(100vh - var(--hh));height:calc(100svh - var(--hh));min-height:520px}
+  .hero-photo{order:0;flex:none;min-height:0}
   .hero-photo img{object-position:56% 50%}
-  .hero .doorway{padding:40px 0;display:flex;background-size:1040px auto}
-  .hero .door{height:100%;max-width:none;width:min(448px,78%);padding:0 28px 0;justify-content:center}
+  .hero .doorway{padding:clamp(20px,4.4svh,40px) 0;display:flex;background-size:1040px auto}
+  .hero .door{height:100%;max-width:none;width:min(448px,78%);padding:0 28px;justify-content:center}
   .hero .door-mark img{width:min(340px,82%)}
   .hero .door-line{margin-top:30px;font-size:clamp(1.6rem,2.3vw,2rem)}
-  .hero .door .btn{margin-top:36px}
+  .hero .door .btn{margin-top:36px;min-height:48px}
 }
 
 /* generic sections */
